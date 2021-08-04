@@ -6,6 +6,13 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+
 import Progress from './progress';
 import geometry from '../data/geometry';
 import cityRank from '../data/cityRank';
@@ -27,6 +34,16 @@ const useStyle = makeStyles((theme) => ({
 		justifyContent: "flex-start",
 		flexDirection: "column",
 		height: "55vh"
+	},
+	
+	circle:{
+		height:"50px",
+		width:"50px",
+		border:"2px solid",
+		borderRadius:"50%",
+		margin:"auto",
+		lineHeight:"50px",
+		textAlign:'center',
 	}
 	
 }))
@@ -39,7 +56,13 @@ const calcBalcony = (year => Math.min(100, Math.round(15.917 * Math.pow(curYear 
 function FacilityComponent(props){
 	const classes = useStyle();
 	const facilittName = ["스트레이너(SP설비)", "화재감지시간 (자동화재탐지설비)", "부식진행상태 (다중이용업소 발코니)"]
-		const cdata = consultData[props.facility];
+	const facilittEng = ["sp", 'alarm', 'balcony'];
+	const imgext = ["JPG", "PNG", "JPG"];
+	
+	const cdata = consultData[props.facility];
+	
+	const status = ["안심", "경고", "위험"];	
+	const colors = ['green', 'orange', 'red'];
 		
 	var step;
 	for (step = 0; step < 3; step++) {
@@ -50,23 +73,35 @@ function FacilityComponent(props){
 	
 	return(
 	<Paper style={{height:"100%", width:"95%", padding:'5px', marginBottom:"20px"}}>
-		<Grid container direction='row' spacing={3}>
-			<Grid item xs={4} style={{textAlign:"center", paddingRight:"0"}}> 
+		<Grid container direction='row' spacing={1}>
+			<Grid item xs={12} sm={12} md={4} style={{textAlign:"center", paddingRight:"0"}}> 
 				<h4>{facilittName[props.facility]}</h4>
 			</Grid>
-			<Grid item xs={8}>
-				<div style={{display:'flex', alignItems:'center', height:"100%"}}>
-					<Progress percent={props.percent} step={step}/>
-				</div>
+			<Grid container item xs={12} sm={12} md={8}>
+				<Grid item xs={3} style={{textAlign:'center', paddingTop:'5px'}}>
+					<div className={classes.circle} style={{color:colors[step], borderColor:colors[step]}}>
+						<b>{status[step]}</b>
+					</div>
+				</Grid>
+				<Grid item xs={8}>
+					<div style={{display:'flex', alignItems:'center', height:"100%"}}>
+						<Progress percent={props.percent} step={step}/>
+					</div>
+				</Grid>
 			</Grid>
 		</Grid>
 		<Grid item container spacing={1} direction="row" justifyContent="center" alignItems="stretch">
 				<Grid item xs={12} sm={12} md={4} style={{textAlign:"center"}}>
 					<Paper variant='outlined' className={classes.paperTab}>
-						<img src={props.imgsrc} alt="img" style={{width:"100%"}}></img>
+						<img src={`/images/${facilittEng[props.facility]}/level${step+1}.${imgext[props.facility]}`}
+							alt="img" style={{width:"100%", maxWidth:"300px"}}></img>
+						{props.facility === 0 ? 
+							<img src={`/images/sp/level${step+1}_2.JPG`}
+							alt="img" style={{width:"100%", maxWidth:"300px"}}></img> :
+						<React.Fragment></React.Fragment>}
 					</Paper>
 				</Grid>
-				<Grid item container spacing={1} direction="column" xs={12} sm={12} md={8}>
+				<Grid item container spacing={1} direction="column" xs={12} sm={12} md={8} alignItems='stretch'>
 					<Grid item style={{height:"50%"}}>
 						<Paper variant='outlined' className={classes.paperTab}>
 							<h3>증상 및 위험성</h3>
@@ -175,6 +210,16 @@ function ResultComponent(props){
 	const classes = useStyle();
 	var rank = undefined;
 	
+	function createData(name, level1, level2, level3) {
+	  return { name, level1, level2, level3 };
+	}
+
+	const rows = [
+	  createData('스트레이너(SP설비)', "~30%", '30~60%', "60%~"),
+	  createData('화재감지시간(자동화재탐지설비)', "~20%", "20~40%", "40%~"),
+	  createData('부식진행상태(다중이용업소 발코니)', "~40%", "40~75%", "75%~"),
+	];
+	
 	if(props.value){
 		cityRank.forEach((city, idx) => {
 			if(city === props.value.location){
@@ -198,22 +243,57 @@ function ResultComponent(props){
 						<Grid item xs={12} sm={12} md={8}>
 							<Paper variant='outlined' className={classes.paperTab} style={{height:"100%"}}>
 								<div style={{display:'flex', alignItems:'center', height:"100%", padding:'5px', fontSize:'min(18px, 5vw)'}}>
-									<h3 style={{textAlign:'center', width:"100%"}}><p>2020년 기준 시흥시 행정구역 중 </p>
-										<p><span style={{color:'red'}}>{props.value.name}</span>이(가) 위치한</p>
-										<span style={{color:'red'}}>{props.value.location}</span>의 위험도 순위는 {cityRank.length}개 법정동 중 
-										<span style={{color:'red'}}> {rank}</span>위</h3>
+									<h3 style={{textAlign:'center', width:"100%"}}><p>
+										<span style={{color:'red'}}> {props.value.name}</span>이(가) 위치한</p>
+										<p><span style={{color:'red'}}>{props.value.location}</span>의 위험도 순위는</p>
+										<p>{cityRank.length}개 법정동 중 <span style={{color:'red'}}> {rank}</span>위</p>
+									</h3>
 								</div>
 							</Paper>
 						</Grid>
 					</Grid>
 				</Paper>
-				<FacilityComponent facility={0} percent={calcSP(props.value.year)}
-					imgsrc="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile3.uf.tistory.com%2Fimage%2F1250F5334D8ABA17037EE6"/>
-				<FacilityComponent facility={1} percent={calcAlarm(props.value.year)}
-					imgsrc="https://m.able119.co.kr/web/product/big/shop1_da4e5fa126c2d2d24a24bbc31c5a498b.jpg"/>
-				<FacilityComponent facility={2} percent={calcBalcony(props.value.year)}
-					imgsrc="https://post-phinf.pstatic.net/MjAxODAyMDVfMTIw/MDAxNTE3Nzk0MDY5OTc4.Rvj71byY93QRAwtv4j8HYK6sPRp0kX9riGs6lM8pmNsg.LNI85MA3USo0ARxuB9Gjun5o4ELx2uciX1q1c4_tn3cg.PNG/%EB%B0%9C%EC%BD%94%EB%8B%88%C2%B7%ED%85%8C%EB%9D%BC%EC%8A%A4_%EA%B0%80%EA%B2%A9%2C_%EB%B6%84%EC%96%91%EA%B0%80%EC%97%90_%EC%82%AC%EC%8B%A4%EC%83%81_%ED%8F%AC%ED%95%A8_1.png?type=w1200"/>
-			</Grid> : <React.Fragment></React.Fragment>}	
+				<FacilityComponent facility={0} percent={calcSP(props.value.year)}/>
+				<FacilityComponent facility={1} percent={calcAlarm(props.value.year)}/>
+				<FacilityComponent facility={2} percent={calcBalcony(props.value.year)}/>
+			</Grid> :
+				
+			<TableContainer component={Paper}>
+			  <Table aria-label="simple table">
+				<TableHead>
+				  <TableRow>
+					<TableCell align="right"></TableCell>
+					<TableCell align="right">
+						<div className={classes.circle} style={{color:'green', borderColor:'green'}}>
+							<b>안심</b>
+						</div>
+					</TableCell>
+					<TableCell align="right">
+						<div className={classes.circle} style={{color:'orange', borderColor:'orange'}}>
+							<b>경고</b>
+						</div>					  
+					</TableCell>
+					<TableCell align="right">
+						<div className={classes.circle} style={{color:'red', borderColor:'red'}}>
+							<b>위험</b>
+						</div>					
+				    </TableCell>
+				  </TableRow>
+				</TableHead>
+				<TableBody>
+				  {rows.map((row) => (
+					<TableRow key={row.name}>
+					  <TableCell scope="row">
+						<b>{row.name}</b>
+					  </TableCell>
+					  <TableCell align="center">{row.level1}</TableCell>
+					  <TableCell align="center">{row.level2}</TableCell>
+					  <TableCell align="center">{row.level3}</TableCell>
+					</TableRow>
+				  ))}
+				</TableBody>
+			  </Table>
+			</TableContainer>}	
 		</Container>
 	
 	)

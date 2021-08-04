@@ -35,14 +35,14 @@ const Progress = (props) => {
 	const classes = useStyles();
 
 	const red = "#F2909C";
-	const yellow = "#FDFD96";
+	const orange = "#FAC898";
 	const green = "#CFF0CC";
 	var color = red;
 
 	if(props.step === 2)
 		color = red;
 	else if(props.step=== 1)
-		color = yellow;
+		color = orange;
 	else
 		color = green;
 
