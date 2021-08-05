@@ -44,7 +44,13 @@ const useStyle = makeStyles((theme) => ({
 		margin:"auto",
 		lineHeight:"50px",
 		textAlign:'center',
-	}
+	},
+	
+	test: {
+		['@media (max-width:960px)']: { // eslint-disable-line no-useless-computed-key
+		  height: '100%'
+		}
+  	}
 	
 }))
 
@@ -101,19 +107,19 @@ function FacilityComponent(props){
 						<React.Fragment></React.Fragment>}
 					</Paper>
 				</Grid>
-				<Grid item container spacing={1} direction="column" xs={12} sm={12} md={8} alignItems='stretch'>
+				<Grid item container spacing={1} direction="column" xs={12} sm={12} md={8} className={classes.test}>
 					<Grid item style={{height:"50%"}}>
 						<Paper variant='outlined' className={classes.paperTab}>
-							<h3>증상 및 위험성</h3>
-							<ul style={{paddingLeft:'15px'}}>
+							<h4 style={{margin:"5px 0"}}>증상 및 위험성</h4>
+							<ul style={{paddingLeft:'15px', fontSize:'min(16px, 4vw)'}}>
 								{cdata[step].symptom.map((x, idx) => <li key={idx}>{x}</li>)}
 							</ul>
 						</Paper>
 					</Grid>
 					<Grid item style={{height:"50%"}}>
 						<Paper variant='outlined' className={classes.paperTab}>
-							<h3>조치사항</h3>
-							<ul style={{paddingLeft:'15px'}}>
+							<h4 style={{margin:"5px 0"}}>조치사항</h4>
+							<ul style={{paddingLeft:'15px', fontSize:'min(16px, 4vw)'}}>
 								{cdata[step].consult.map((x, idx) => <li key={idx}>{x}</li>)}
 							</ul>
 						</Paper>
