@@ -192,9 +192,9 @@ const bdata = [
 		"balcony": true
 	},
 	{
-		"name":"건물25",
+		"name":"장곡중학교",
 		"location":"장곡동",
-		"year": 2015,
+		"year": 1999,
 		"ps": false,
 		"alarm": false,
 		"balcony": true

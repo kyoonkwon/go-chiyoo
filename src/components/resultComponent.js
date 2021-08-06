@@ -46,11 +46,17 @@ const useStyle = makeStyles((theme) => ({
 		textAlign:'center',
 	},
 	
-	test: {
+	consult: {
 		['@media (max-width:960px)']: { // eslint-disable-line no-useless-computed-key
 		  height: '100%'
 		}
-  	}
+  	},
+	
+	facilityClass:{
+		['@media (max-width:960px)']: { // eslint-disable-line no-useless-computed-key
+		  marginBottom: '0'
+		}
+	}
 	
 }))
 
@@ -61,8 +67,8 @@ const calcBalcony = (year => Math.min(100, Math.round(15.917 * Math.pow(curYear 
 
 function FacilityComponent(props){
 	const classes = useStyle();
-	const facilittName = ["스트레이너(SP설비)", "화재감지시간 (자동화재탐지설비)", "부식진행상태 (다중이용업소 발코니)"]
-	const facilittEng = ["sp", 'alarm', 'balcony'];
+	const facilityName = ["스트레이너(SP설비)", "화재감지시간 (자동화재탐지설비)", "부식진행상태 (다중이용업소 발코니)"]
+	const facilityEng = ["sp", 'alarm', 'balcony'];
 	const imgext = ["JPG", "PNG", "JPG"];
 	
 	const cdata = consultData[props.facility];
@@ -79,9 +85,9 @@ function FacilityComponent(props){
 	
 	return(
 	<Paper style={{height:"100%", width:"95%", padding:'5px', marginBottom:"20px"}}>
-		<Grid container direction='row' spacing={1}>
+		<Grid container direction='row' spacing={2}>
 			<Grid item xs={12} sm={12} md={4} style={{textAlign:"center", paddingRight:"0"}}> 
-				<h4>{facilittName[props.facility]}</h4>
+				<h4 className={classes.facilityClass}>{facilityName[props.facility]}</h4>
 			</Grid>
 			<Grid container item xs={12} sm={12} md={8}>
 				<Grid item xs={3} style={{textAlign:'center', paddingTop:'5px'}}>
@@ -99,15 +105,15 @@ function FacilityComponent(props){
 		<Grid item container spacing={1} direction="row" justifyContent="center" alignItems="stretch">
 				<Grid item xs={12} sm={12} md={4} style={{textAlign:"center"}}>
 					<Paper variant='outlined' className={classes.paperTab}>
-						<img src={`/images/${facilittEng[props.facility]}/level${step+1}.${imgext[props.facility]}`}
-							alt="img" style={{width:"100%", maxWidth:"300px"}}></img>
+						<img src={`/images/${facilityEng[props.facility]}/level${step+1}.${imgext[props.facility]}`}
+							alt={`${facilityEng[props.facility]}_level${step+1}`} style={{width:"100%", maxWidth:"300px"}}></img>
 						{props.facility === 0 ? 
 							<img src={`/images/sp/level${step+1}_2.JPG`}
-							alt="img" style={{width:"100%", maxWidth:"300px"}}></img> :
+							alt={`sp_level${step+1}_2`} style={{width:"100%", maxWidth:"300px"}}></img> :
 						<React.Fragment></React.Fragment>}
 					</Paper>
 				</Grid>
-				<Grid item container spacing={1} direction="column" xs={12} sm={12} md={8} className={classes.test}>
+				<Grid item container spacing={1} direction="column" xs={12} sm={12} md={8} className={classes.consult}>
 					<Grid item style={{height:"50%"}}>
 						<Paper variant='outlined' className={classes.paperTab}>
 							<h4 style={{margin:"5px 0"}}>증상 및 위험성</h4>

@@ -11,6 +11,7 @@ import bdata from '../data/building';
 
 const useStyles = makeStyles((theme) => ({
   searchBar: {
+	marginTop: "15px",
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
@@ -47,8 +48,26 @@ function SearchComponent(props){
 	
 	const onSubmitHandler = e => {
 		e.preventDefault();
-		if(searchVal)
+		
+		var found = false;
+		
+		if(typeof searchVal === "string"){
+			bdata.forEach(b => {
+				if(b.name === searchVal){
+					props.toParent(b);
+					found = true;
+				}
+			})
+			if(!found){
+				window.alert("일치하는 대상물 없음");
+				setSearchVal(null)
+			}
+		}
+		else {
 			props.toParent(searchVal);
+		}
+
+			
 	}
 	
 	return(
@@ -69,7 +88,7 @@ function SearchComponent(props){
 					  id="combo-box"
 					  options={bdata}
 					  freeSolo
-					  getOptionLabel={(option) => option.name}
+					  getOptionLabel={(option) => (typeof option) === "string" ? option : option.name}
 					  groupBy={(option) => option.location}
 					  style={{ width: "100%" }}
 					  onChange={(e, val) => onChangeHandler(e, val)}
