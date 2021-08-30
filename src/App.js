@@ -20,7 +20,14 @@ function App() {
 				<SearchComponent toParent={setSearchedValue}/>
 				<ResultComponent value={searchedValue}/>
 			</div>
-			<footer>
+			<Footer />
+		</React.Fragment>
+	);
+}
+
+function Footer() {
+	return (
+		<footer>
 			  <Container maxWidth="md">
 				<div style={{
 						display: 'flex',
@@ -34,8 +41,7 @@ function App() {
 					</IconButton>
 				</div> 
 			  </Container>
-			</footer>
-		</React.Fragment>
+		</footer>
 	);
 }
 

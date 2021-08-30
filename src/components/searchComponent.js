@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 	justifyContent: "center",
 	flexDirection: "column",
 	height: "30vh"
-  }
+  },
 }));
 
 
@@ -75,9 +75,10 @@ function SearchComponent(props){
 				<a href='.' className={classes.title}>
 					<div style={{width:"100%", textAlign:'center'}}>
 						<img src='/logo.png' alt="logo" style={{verticalAlign:'bottom', maxWidth:"120px", width:"100%"}}></img>
-						<h2 style={{margin:"7px 0", fontSize:"min(6vw, 24px)"}}>
-							 노후소방시설 안전컨설팅 플랫폼
+						<h2 style={{margin:"7px 0 7px 0", fontSize:"min(3.5vw, 14px)"}}>
+							  노후 소방시설 안전관리 플랫폼
 						</h2>
+						<h2 style={{margin:"0 0 7px 0", fontSize:"min(7vw, 28px)", fontFamily:"Vitro_core"}}> GO! 치유(治癒)</h2>
 					</div>
 				</a>
 

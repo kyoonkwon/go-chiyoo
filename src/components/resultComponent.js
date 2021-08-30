@@ -13,6 +13,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
+import Alert from '@material-ui/lab/Alert';
+
+
 import Progress from './progress';
 import geometry from '../data/geometry';
 import cityRank from '../data/cityRank';
@@ -269,7 +272,7 @@ function ResultComponent(props){
 				<FacilityComponent facility={1} percent={calcAlarm(props.value.year)}/>
 				<FacilityComponent facility={2} percent={calcBalcony(props.value.year)}/>
 			</Grid> :
-				
+			<React.Fragment>
 			<TableContainer component={Paper}>
 			  <Table aria-label="simple table">
 				<TableHead>
@@ -305,7 +308,14 @@ function ResultComponent(props){
 				  ))}
 				</TableBody>
 			  </Table>
-			</TableContainer>}	
+			</TableContainer>
+			<br />
+			<br />
+			<Alert severity="info">
+				소방관,건물관리자,소방시설관리업체 등 누구나 안전관리플랫폼에 접속(go)하여 건물 소방시설의 노후도를 인지해 적극적인 소방시설 개선(治癒)을 유도,안전한 대한민국을 조성하는 민관 안전공유 플랫폼임. 플랫폼 네이밍에는 오래되어 아픈 소방시설을 '고치러 가자'라는 직관적이고 중의적 의미를 내포
+				</Alert>
+
+			</React.Fragment>}	
 		</Container>
 	
 	)
