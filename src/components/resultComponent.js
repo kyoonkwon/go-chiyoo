@@ -18,7 +18,6 @@ import Alert from '@material-ui/lab/Alert';
 
 import Progress from './progress';
 import geometry from '../data/geometry';
-import cityRank from '../data/cityRank';
 import consultData from '../data/consultData';
 
 const curYear = new Date().getFullYear();
@@ -214,7 +213,7 @@ function KakaoMapComponent(props){
 
     return (
         <div>
-        	<div id="map" style={{width:"100%", height:"250px"}}></div>
+        	<div id="map" style={{width:"100%", height:"300px"}}></div>
        
         </div>
     )
@@ -223,7 +222,6 @@ function KakaoMapComponent(props){
 
 function ResultComponent(props){
 	const classes = useStyle();
-	var rank = undefined;
 	
 	function createData(name, level1, level2, level3) {
 	  return { name, level1, level2, level3 };
@@ -235,14 +233,6 @@ function ResultComponent(props){
 	  createData('부식진행상태(다중이용업소 발코니)', "~40%", "40~75%", "75%~"),
 	];
 	
-	if(props.value){
-		cityRank.forEach((city, idx) => {
-			if(city === props.value.location){
-				rank = idx+1;
-			}
-		})
-	}
-	
 		
 	return(
 		<Container maxWidth="md">
@@ -250,20 +240,9 @@ function ResultComponent(props){
 			<Grid container direction="column" spacing={3} style={{alignItems:'center'}}>
 				<Paper style={{height:"100%", width:"95%", padding:'5px', marginBottom:"20px"}}>
 					<Grid item container spacing={1} direction="row" justifyContent="center" alignItems="stretch">
-						<Grid item xs={12} sm={12} md={4}>
+						<Grid item xs={12} sm={12} md={12}>
 							<Paper variant='outlined' className={classes.paperTab}>
 								<KakaoMapComponent dong={props.value.location}/>
-							</Paper>
-						</Grid>
-						<Grid item xs={12} sm={12} md={8}>
-							<Paper variant='outlined' className={classes.paperTab} style={{height:"100%"}}>
-								<div style={{display:'flex', alignItems:'center', height:"100%", padding:'5px', fontSize:'min(18px, 5vw)'}}>
-									<h3 style={{textAlign:'center', width:"100%"}}><p>
-										<span style={{color:'red'}}> {props.value.name}</span>이(가) 위치한</p>
-										<p><span style={{color:'red'}}>{props.value.location}</span>의 위험도 순위는</p>
-										<p>{cityRank.length}개 법정동 중 <span style={{color:'red'}}> {rank}</span>위</p>
-									</h3>
-								</div>
 							</Paper>
 						</Grid>
 					</Grid>
@@ -313,7 +292,11 @@ function ResultComponent(props){
 			<br />
 			<Alert severity="info">
 				소방관,건물관리자,소방시설관리업체 등 누구나 안전관리플랫폼에 접속(go)하여 건물 소방시설의 노후도를 인지해 적극적인 소방시설 개선(治癒)을 유도,안전한 대한민국을 조성하는 민관 안전공유 플랫폼임. 플랫폼 네이밍에는 오래되어 아픈 소방시설을 '고치러 가자'라는 직관적이고 중의적 의미를 내포
-				</Alert>
+			</Alert>
+			<br />
+			<Alert severity="warning">
+				<b>인터넷 익스플로러</b>에서는 본 웹사이트가 정상적으로 동작하지 않습니다. <b>구글 크롬</b>이나 <b>마이크로소프트 엣지</b> 등의 인터넷 브라우저를 이용해주시기 바랍니다.
+			</Alert>
 
 			</React.Fragment>}	
 		</Container>
