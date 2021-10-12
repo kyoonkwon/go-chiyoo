@@ -48,6 +48,10 @@ const Progress = (props) => {
 
 	React.useEffect(() => {
 		
+		setStyle({
+			width: `0`,
+		});
+		
 		setTimeout(() => {
 		setStyle({
 			opacity: 1,
@@ -55,7 +59,7 @@ const Progress = (props) => {
 			background: `${color}`,
 			boxShadow: `0 3px 3px -5px ${color}, 0 2px 5px ${color}`,
 		});
-		}, 100);
+		}, 1000);
 	}, [props.percent, color]);
 
 
