@@ -1,8 +1,8 @@
 const bdata = [
 	{
 		"name": "중앙소방학교",
-		"location":"정왕동",
-		"year": 1999,
+		"location":"공주시",
+		"year": 2019,
 		"ps": true,
 		"alarm": true,
 		"balcony": false		
@@ -128,7 +128,7 @@ const bdata = [
 		"balcony": true
 	},
 	{
-		"name":"건물16",
+		"name":"금이타운",
 		"location":"금이동",
 		"year": 2006,
 		"ps": false,

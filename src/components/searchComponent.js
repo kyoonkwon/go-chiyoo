@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Container from '@material-ui/core/Container';
@@ -28,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
 	display: "flex",
 	justifyContent: "center",
 	flexDirection: "column",
-	height: "30vh"
+	height: "30%",
+	marginTop:"15px"
   },
 }));
 
@@ -37,18 +38,22 @@ const useStyles = makeStyles((theme) => ({
 function SearchComponent(props){
 	
 	const [searchVal, setSearchVal] = React.useState("");
+	const inputRef = useRef();
 	const classes = useStyles();
 	
 	const onChangeHandler = (e, val) => {
 		setSearchVal(val);
 		if(e._reactName === "onClick"){
 			props.toParent(val);
+			inputRef.current.blur();
+
 		}
 	}
 	
 	const onSubmitHandler = e => {
 		e.preventDefault();
-		
+		inputRef.current.blur();
+
 		var found = false;
 		
 		if(typeof searchVal === "string"){
@@ -70,6 +75,7 @@ function SearchComponent(props){
 			
 	}
 	
+	
 	return(
 		<Container maxWidth="sm" className={classes.searchContainer}>
 				<a href='.' className={classes.title}>
@@ -89,12 +95,12 @@ function SearchComponent(props){
 					  id="combo-box"
 					  options={bdata}
 					  freeSolo
-					  getOptionLabel={(option) => (typeof option) === "string" ? option : option.name}
+					  getOptionLabel={(option) => (typeof option) === "string" ? option : `${option.name} (${option.year}년)`}
 					  groupBy={(option) => option.location}
 					  style={{ width: "100%" }}
 					  onChange={(e, val) => onChangeHandler(e, val)}
 					  renderInput={(params) => 
-						<TextField {...params} placeholder="대상물 검색"/>}
+						<TextField {...params} inputRef={inputRef} placeholder="대상물 검색"/>}
 					/>
 
 				</Paper>

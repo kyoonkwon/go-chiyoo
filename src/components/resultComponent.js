@@ -31,12 +31,6 @@ const useStyle = makeStyles((theme) => ({
 		border: "1px solid #808080"
 	},
 	
-	resultContainer:{
-		display: "flex",
-		justifyContent: "flex-start",
-		flexDirection: "column",
-		height: "55vh"
-	},
 	
 	circle:{
 		height:"50px",
@@ -143,69 +137,89 @@ function FacilityComponent(props){
 function KakaoMapComponent(props){
 	
 	React.useEffect(()=>{
-    var container = document.getElementById('map');
-    var options = {
-      center: new kakao.maps.LatLng(37.3798877, 126.8031025),
-      level: 8
-    };
-	// eslint-disable-next-line
-    var map = new kakao.maps.Map(container, options);
+		var container = document.getElementById('map');
+		var options = {
+		  center: new kakao.maps.LatLng(37.3798877, 126.8031025),
+		  level: 8
+		};
+		// eslint-disable-next-line
+		var map = new kakao.maps.Map(container, options);
 
-	var polygonPath = []
-	
-	var cy=0, cx=0;
-	var n_poly = 0;
+		var polygonPath = []
+
+		var cy=0, cx=0;
+		var n_poly = 0;
+		var centerLoc;
 		
-	geometry["features"].forEach(f => {
-		if(f["properties"]["EMD_KOR_NM"] === props.dong){
-			f["geometry"]['coordinates'].forEach(area =>{
+		geometry["features"].forEach(f => {
+			if(f["properties"]["EMD_KOR_NM"] === props.dong){
+				f["geometry"]['coordinates'].forEach(area =>{
 
-				if(area.length === 1){
-					polygonPath.push(area[0].map(xy => new kakao.maps.LatLng(xy[1], xy[0])));
-					area[0].forEach(xy => {
-						cy += xy[1];
-						cx += xy[0];
-						n_poly += 1;
-					})
-				}
-				else{
-					polygonPath.push(area.map(xy => new kakao.maps.LatLng(xy[1], xy[0])));
-					area.forEach(xy => {
-						cy += xy[1];
-						cx += xy[0];
-						n_poly += 1;
-					})
-				}
-			})
+					if(area.length === 1){
+						polygonPath.push(area[0].map(xy => new kakao.maps.LatLng(xy[1], xy[0])));
+						area[0].forEach(xy => {
+							cy += xy[1];
+							cx += xy[0];
+							n_poly += 1;
+						})
+					}
+					else{
+						polygonPath.push(area.map(xy => new kakao.maps.LatLng(xy[1], xy[0])));
+						area.forEach(xy => {
+							cy += xy[1];
+							cx += xy[0];
+							n_poly += 1;
+						})
+					}
+				})
+			}
+		})
+	
+		if(n_poly >0){
+			centerLoc = new kakao.maps.LatLng(cy/n_poly, cx/n_poly); 
+			map.setCenter(centerLoc);
+
+
+			var customOverlay = new kakao.maps.CustomOverlay({
+				position : centerLoc, 
+				content : '<h4>' + props.dong + '</h4>',
+			});
+
+			customOverlay.setMap(map);
 		}
-	})
-	
-	if(n_poly >0){
-		var centerLoc = new kakao.maps.LatLng(cy/n_poly, cx/n_poly); 
-		map.setCenter(centerLoc);
-		
-		
-		var customOverlay = new kakao.maps.CustomOverlay({
-			position : centerLoc, 
-			content : '<h4>' + props.dong + '</h4>',
+		else{
+			// nfsa
+			var y = 36.52280965835811,
+				x = 127.05432936729997;
+			
+			centerLoc = new kakao.maps.LatLng(y, x); 
+			map.setCenter(centerLoc);
+
+
+			var markerPosition = centerLoc; 
+
+			var marker = new kakao.maps.Marker({
+				position: markerPosition
+			});
+
+			marker.setMap(map); 
+			map.setLevel(5);
+			
+		}
+
+
+		var polygon = new kakao.maps.Polygon({
+			path:polygonPath, // 그려질 다각형의 좌표 배열입니다
+			strokeWeight: 3, // 선의 두께입니다
+			strokeColor: '#39DE2A', // 선의 색깔입니다
+			strokeOpacity: 0.8, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+			strokeStyle: 'solid', // 선의 스타일입니다
+			fillColor: '#A2FF99', // 채우기 색깔입니다
+			fillOpacity: 0.7 // 채우기 불투명도 입니다
 		});
-		
-		customOverlay.setMap(map);
-	}
-	
-	
-	var polygon = new kakao.maps.Polygon({
-		path:polygonPath, // 그려질 다각형의 좌표 배열입니다
-		strokeWeight: 3, // 선의 두께입니다
-		strokeColor: '#39DE2A', // 선의 색깔입니다
-		strokeOpacity: 0.8, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-		strokeStyle: 'solid', // 선의 스타일입니다
-		fillColor: '#A2FF99', // 채우기 색깔입니다
-		fillOpacity: 0.7 // 채우기 불투명도 입니다
-	});
-		
-	polygon.setMap(map);
-      
+
+		polygon.setMap(map);
+
 	
     }, [props.dong])
 	
@@ -235,7 +249,7 @@ function ResultComponent(props){
 	
 		
 	return(
-		<Container maxWidth="md">
+		<Container maxWidth="md" style={{marginTop:"20px"}}>
 			{props.value ?
 			<Grid container direction="column" spacing={3} style={{alignItems:'center'}}>
 				<Paper style={{height:"100%", width:"95%", padding:'5px', marginBottom:"20px"}}>
@@ -288,7 +302,6 @@ function ResultComponent(props){
 				</TableBody>
 			  </Table>
 			</TableContainer>
-			<br />
 			<br />
 			<Alert severity="info">
 				소방관,건물관리자,소방시설관리업체 등 누구나 안전관리플랫폼에 접속(go)하여 건물 소방시설의 노후도를 인지해 적극적인 소방시설 개선(治癒)을 유도,안전한 대한민국을 조성하는 민관 안전공유 플랫폼임. 플랫폼 네이밍에는 오래되어 아픈 소방시설을 '고치러 가자'라는 직관적이고 중의적 의미를 내포

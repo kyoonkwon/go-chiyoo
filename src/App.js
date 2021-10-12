@@ -16,7 +16,7 @@ function App() {
 	
 	return (
 		<React.Fragment>
-			<div style={{display:"flex", minHeight:"92.5vh", flexDirection:"column"}}>
+			<div style={{display:"flex", minHeight:"93vh", flexDirection:"column"}}>
 				<SearchComponent toParent={setSearchedValue}/>
 				<ResultComponent value={searchedValue}/>
 			</div>
@@ -33,7 +33,8 @@ function Footer() {
 						display: 'flex',
 						alignItems: 'center',
 						flexWrap: 'wrap',
-						textAlign:'right'
+						textAlign:'right',
+						fontSize:"15px"
 					}}>
 					<span> Developed By Kihoon Kwon </span>
 					<IconButton href="https://www.github.com/kyoonkwon">
