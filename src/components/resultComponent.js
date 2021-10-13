@@ -33,13 +33,14 @@ const useStyle = makeStyles((theme) => ({
 	
 	
 	circle:{
-		height:"50px",
-		width:"50px",
+		height:"30px",
+		width:"30px",
 		border:"2px solid",
 		borderRadius:"50%",
-		margin:"auto",
-		lineHeight:"50px",
+		margin:"10px auto 10px auto",
+		lineHeight:"30px",
 		textAlign:'center',
+		fontSize:'12px'
 	},
 	
 	consult: {
@@ -112,18 +113,22 @@ function FacilityComponent(props){
 				<Grid item container spacing={1} direction="column" xs={12} sm={12} md={8} className={classes.consult}>
 					<Grid item style={{height:"50%"}}>
 						<Paper variant='outlined' className={classes.paperTab}>
-							<h4 style={{margin:"5px 0"}}>증상 및 위험성</h4>
-							<ul style={{paddingLeft:'15px', fontSize:'min(16px, 4vw)'}}>
-								{cdata[step].symptom.map((x, idx) => <li key={idx}>{x}</li>)}
-							</ul>
+							<div style={{padding:'10px'}}>
+								<h4 style={{margin:"5px 0"}}>[증상 및 위험성]</h4>
+								<ul style={{paddingLeft:'15px', fontSize:'min(16px, 4vw)'}}>
+									{cdata[step].symptom.map((x, idx) => <li key={idx}>{x}</li>)}
+								</ul>
+							</div>
 						</Paper>
 					</Grid>
 					<Grid item style={{height:"50%"}}>
 						<Paper variant='outlined' className={classes.paperTab}>
-							<h4 style={{margin:"5px 0"}}>조치사항</h4>
-							<ul style={{paddingLeft:'15px', fontSize:'min(16px, 4vw)'}}>
-								{cdata[step].consult.map((x, idx) => <li key={idx}>{x}</li>)}
-							</ul>
+							<div style={{padding:'10px'}}>
+								<h4 style={{margin:"5px 0"}}>[조치사항]</h4>
+								<ul style={{paddingLeft:'15px', fontSize:'min(16px, 4vw)'}}>
+									{cdata[step].consult.map((x, idx) => <li key={idx}>{x}</li>)}
+								</ul>
+							</div>
 						</Paper>
 					</Grid>
 				</Grid>
@@ -240,11 +245,15 @@ function ResultComponent(props){
 	function createData(name, level1, level2, level3) {
 	  return { name, level1, level2, level3 };
 	}
+	
+	const Item = ({ text }) => {
+	  return text;
+	};
 
 	const rows = [
-	  createData('스트레이너(SP설비)', "~30%", '30~60%', "60%~"),
-	  createData('화재감지시간(자동화재탐지설비)', "~20%", "20~40%", "40%~"),
-	  createData('부식진행상태(다중이용업소 발코니)', "~40%", "40~75%", "75%~"),
+	  createData(<Item text={["스트레이너", <wbr/>, " (SP설비)"]}/>, "~30%", '30~60%', "60%~"),
+	  createData(<Item text={["화재감지시간", <wbr/>,  " (자동화재", <wbr/>,"탐지설비)"]}/>, "~20%", "20~40%", "40%~"),
+	  createData(<Item text={["부식진행상태", <wbr/>, " (다중이용업소", <wbr/>," 발코니)"]}/>, "~40%", "40~75%", "75%~"),
 	];
 	
 		
@@ -266,22 +275,22 @@ function ResultComponent(props){
 				<FacilityComponent facility={2} percent={calcBalcony(props.value.year)}/>
 			</Grid> :
 			<React.Fragment>
-			<TableContainer component={Paper}>
+			<TableContainer component={Paper} style={{maxWidth:"550px", margin:"0 auto"}}>
 			  <Table aria-label="simple table">
 				<TableHead>
 				  <TableRow>
-					<TableCell align="right"></TableCell>
-					<TableCell align="right">
+					<TableCell align="right" style={{padding:"0"}}></TableCell>
+					<TableCell align="right" style={{padding:"0"}}>
 						<div className={classes.circle} style={{color:'green', borderColor:'green'}}>
 							<b>안심</b>
 						</div>
 					</TableCell>
-					<TableCell align="right">
+					<TableCell align="right" style={{padding:"0"}}>
 						<div className={classes.circle} style={{color:'orange', borderColor:'orange'}}>
 							<b>경고</b>
 						</div>					  
 					</TableCell>
-					<TableCell align="right">
+					<TableCell align="right" style={{padding:"0"}}>
 						<div className={classes.circle} style={{color:'red', borderColor:'red'}}>
 							<b>위험</b>
 						</div>					
@@ -291,8 +300,8 @@ function ResultComponent(props){
 				<TableBody>
 				  {rows.map((row) => (
 					<TableRow key={row.name}>
-					  <TableCell scope="row">
-						<b>{row.name}</b>
+					  <TableCell align="right">
+						<b><p style={{whiteSpace:"pre"}}>{row.name}</p></b>
 					  </TableCell>
 					  <TableCell align="center">{row.level1}</TableCell>
 					  <TableCell align="center">{row.level2}</TableCell>
@@ -303,11 +312,12 @@ function ResultComponent(props){
 			  </Table>
 			</TableContainer>
 			<br />
-			<Alert severity="info">
-				소방관,건물관리자,소방시설관리업체 등 누구나 안전관리플랫폼에 접속(go)하여 건물 소방시설의 노후도를 인지해 적극적인 소방시설 개선(治癒)을 유도,안전한 대한민국을 조성하는 민관 안전공유 플랫폼임. 플랫폼 네이밍에는 오래되어 아픈 소방시설을 '고치러 가자'라는 직관적이고 중의적 의미를 내포
+			<Alert severity="info" style={{maxWidth:"540px", margin:"0 auto"}}>
+				소방관, 건물관리자, 소방시설관리업체 등 누구나 안전관리플랫폼에 접속(go)하여 건물 소방시설의 노후도를 인지해 적극적인 소방시설 개선(治癒)을 유도,안전한 대한민국을 조성하는 민관 안전공유 플랫폼임. <br /> 
+				플랫폼 네이밍에는 오래되어 아픈 소방시설을 '고치러 가자'라는 직관적이고 중의적 의미를 내포
 			</Alert>
 			<br />
-			<Alert severity="warning">
+			<Alert severity="warning" style={{maxWidth:"540px", margin:"0 auto"}}>
 				<b>인터넷 익스플로러</b>에서는 본 웹사이트가 정상적으로 동작하지 않습니다. <b>구글 크롬</b>이나 <b>마이크로소프트 엣지</b> 등의 인터넷 브라우저를 이용해주시기 바랍니다.
 			</Alert>
 

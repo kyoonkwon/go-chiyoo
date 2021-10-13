@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 	justifyContent: "center",
 	flexDirection: "column",
 	height: "30%",
-	marginTop:"15px"
+	marginTop:"30px"
   },
 }));
 
@@ -97,10 +97,11 @@ function SearchComponent(props){
 					  freeSolo
 					  getOptionLabel={(option) => (typeof option) === "string" ? option : `${option.name} (${option.year}년)`}
 					  groupBy={(option) => option.location}
-					  style={{ width: "100%" }}
+					  style={{ width: "100%"}}
 					  onChange={(e, val) => onChangeHandler(e, val)}
+					  type="text"
 					  renderInput={(params) => 
-						<TextField {...params} inputRef={inputRef} placeholder="대상물 검색"/>}
+						<TextField {...params} inputRef={inputRef} placeholder="대상물 검색" style={{"imeMode":"active"}}/>}
 					/>
 
 				</Paper>
