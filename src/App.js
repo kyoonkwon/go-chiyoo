@@ -8,7 +8,6 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 import ResultComponent from './components/resultComponent'
 import SearchComponent from './components/searchComponent'
 
-// import {firestore} from './firebase';
 
 function App() {
 

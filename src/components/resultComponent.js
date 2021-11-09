@@ -243,20 +243,15 @@ function ResultComponent(props){
 	const classes = useStyle();
 	
 	function createData(name, level1, level2, level3) {
-	  return { name, level1, level2, level3 };
+	  return { name, level1, level2, level3};
 	}
-	
-	const Item = ({ text }) => {
-	  return text;
-	};
 
 	const rows = [
-	  createData(<Item text={["스트레이너", <wbr/>, " (SP설비)"]}/>, "~30%", '30~60%', "60%~"),
-	  createData(<Item text={["화재감지시간", <wbr/>,  " (자동화재", <wbr/>,"탐지설비)"]}/>, "~20%", "20~40%", "40%~"),
-	  createData(<Item text={["부식진행상태", <wbr/>, " (다중이용업소", <wbr/>," 발코니)"]}/>, "~40%", "40~75%", "75%~"),
-	];
-	
-		
+	  createData("스트레이너<wbr/> (SP설비)", "~30%", "30~60%", "60%~"),
+	  createData("화재감지시간<wbr/> (자동화재<wbr/>탐지설비)", "~20%", "20~40%", "40%~"),
+	  createData("부식진행상태<wbr/> (다중이용업소<wbr/> 발코니)", "~40%", "40~75%", "75%~"),
+	]
+			
 	return(
 		<Container maxWidth="md" style={{marginTop:"20px"}}>
 			{props.value ?
@@ -265,14 +260,14 @@ function ResultComponent(props){
 					<Grid item container spacing={1} direction="row" justifyContent="center" alignItems="stretch">
 						<Grid item xs={12} sm={12} md={12}>
 							<Paper variant='outlined' className={classes.paperTab}>
-								<KakaoMapComponent dong={props.value.location}/>
+								<KakaoMapComponent dong={props.value["주소"].split(" ")[2]}/>
 							</Paper>
 						</Grid>
 					</Grid>
 				</Paper>
-				<FacilityComponent facility={0} percent={calcSP(props.value.year)}/>
-				<FacilityComponent facility={1} percent={calcAlarm(props.value.year)}/>
-				<FacilityComponent facility={2} percent={calcBalcony(props.value.year)}/>
+				<FacilityComponent facility={0} percent={calcSP(Number(props.value["사용승인일자"].split("-")[0]))}/>
+				<FacilityComponent facility={1} percent={calcAlarm(Number(props.value["사용승인일자"].split("-")[0]))}/>
+				<FacilityComponent facility={2} percent={calcBalcony(Number(props.value["사용승인일자"].split("-")[0]))}/>
 			</Grid> :
 			<React.Fragment>
 			<TableContainer component={Paper} style={{maxWidth:"550px", margin:"0 auto"}}>
@@ -298,16 +293,22 @@ function ResultComponent(props){
 				  </TableRow>
 				</TableHead>
 				<TableBody>
-				  {rows.map((row) => (
-					<TableRow key={row.name}>
-					  <TableCell align="right">
-						<b><p style={{whiteSpace:"pre"}}>{row.name}</p></b>
-					  </TableCell>
-					  <TableCell align="center">{row.level1}</TableCell>
-					  <TableCell align="center">{row.level2}</TableCell>
-					  <TableCell align="center">{row.level3}</TableCell>
-					</TableRow>
-				  ))}
+				  {rows.map((row, idx) => {						
+						return(
+							<TableRow key={`row${idx}`}>
+							  <TableCell align="right">
+								<b><p style={{whiteSpace:"pre"}}>{row.name.split("<wbr/>").map((txt, idx) => {
+										return (<React.Fragment key={idx}>
+											{txt}
+											<wbr />
+										</React.Fragment>
+									)})}</p></b>
+							  </TableCell>
+							  <TableCell align="center">{row.level1}</TableCell>
+							  <TableCell align="center">{row.level2}</TableCell>
+							  <TableCell align="center">{row.level3}</TableCell>
+							</TableRow>
+					)})}
 				</TableBody>
 			  </Table>
 			</TableContainer>
