@@ -4,7 +4,7 @@
 
 Demo: [https://siheung-consulting.web.app](https://siheung-consulting.web.app)
 
-![main]("./src/main.PNG")|![searched]("./src/searched.PNG")|
+<img src="./src/main.PNG" />|<img src="./src/searched.PNG" />|
 |---|---|
 
 메인 화면에서 대상물 검색 시, 오른쪽 이미지처럼 해당 대상물의 노후도를 progress bar 형식으로 나타냅니다.
